@@ -17,9 +17,7 @@ steps:
 
 - script: |
     npm install
-    sudo npm install -g
     npm run build
-    npx mocha
   displayName: 'npm install and build'
 
 - script: |
