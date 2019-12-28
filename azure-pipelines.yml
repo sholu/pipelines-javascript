@@ -17,5 +17,23 @@ steps:
 
 - script: |
     npm install
+    sudo npm install -g
     npm run build
+    npx mocha
   displayName: 'npm install and build'
+
+- script: |
+     mocha test --reporter mocha-junit-reporter
+  displayName: 'run mocha'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testRunner: JUnit
+    testResultsFiles: '**/TEST-RESULTS.xml'
+
+- task: PublishCodeCoverageResults@1
+  inputs: 
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
